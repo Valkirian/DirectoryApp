@@ -1,0 +1,88 @@
+syntax = "proto3";
+package directoryapp;
+option go_package = "../directoryapp";
+
+message Client {
+  string id = 1;
+  string name = 2;
+  string phone = 3;
+  string email = 4;
+  string password = 5;
+  string usertype = 6;
+  repeated Task tasks = 7;
+}
+
+message Worker {
+  string id  = 1;
+  string name = 2;
+  string phone = 3;
+  string email = 4;
+  string password = 5;
+  string profession = 6;
+  repeated Task tasks = 7;
+  repeated string supports = 8;
+  repeated string supportsname = 9;
+  string usertype = 10;
+}
+
+message Task {
+  string id = 1;
+  string description = 2;
+  string profession = 3;
+  optional Client requester = 4;
+  optional Worker worker = 5;
+  bool isdone = 6;
+}
+
+message TaskRequest{
+  Task task = 1;
+}
+
+message TaskResponse {
+  string taskid = 1;
+  Client requester = 2;
+  string description = 3;
+}
+
+message ApplyRequest {
+  string workername = 1;
+  Task existingtask = 2;
+}
+
+message ApplyResponse {
+  string confirmation = 1;
+}
+
+message UpdatetoDoneRequest {
+  Task task = 1;
+}
+
+message UpdatetoDoneResponse {
+  string confirmation = 1;
+}
+
+message CreateClientRequest {
+  Client client = 1;
+}
+
+message CreateClientResponse {
+  string client = 1;
+}
+
+message CreateWorkerRequest {
+  Worker worker = 1;
+}
+
+message CreateWorkerResponse {
+  string worker = 1;
+
+}
+
+
+service WorkService {
+  rpc CreateClient (CreateClientRequest) returns (CreateClientResponse) {}
+  rpc CreateWorker (CreateWorkerRequest) returns (CreateWorkerResponse) {}
+  rpc CreateWorkRequest (TaskRequest) returns (TaskResponse) {}
+  rpc ApplytoWork (ApplyRequest) returns (ApplyResponse) {}
+  rpc UpdateTasktoDone (UpdatetoDoneRequest) returns (UpdatetoDoneResponse) {}
+}
